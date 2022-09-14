@@ -17,3 +17,10 @@ export async function createNewUser(userData:ICreateUserData) {
 
     return createdUser;
 }
+
+export async function findById(id: number) {
+    
+    return prisma.user.findUnique({
+      where: { id }
+    });
+  }
