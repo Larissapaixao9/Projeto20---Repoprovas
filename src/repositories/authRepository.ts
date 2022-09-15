@@ -19,7 +19,7 @@ export async function createNewUser(userData:ICreateUserData) {
 }
 
 export async function findById(id: number) {
-    
+
     return prisma.user.findUnique({
       where: { id }
     });

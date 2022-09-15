@@ -32,11 +32,16 @@ export default function tokenValidatorMiddleware(
     //verify if token is valid and getting the id
     const { userId } =  jwt.verify(token, jwtSecret) as { userId:number }
 
-    //compare id stored as payload in Token with the user in database
-    const user =  authService.findUserById(userId)
+    if(userId!=null){
 
-    //using locals to save the user and pass it to controller
-    res.locals.user = user
+        //compare id stored as payload in Token with the user in database
+        const user =  authService.findUserById(userId)
+
+        //using locals to save the user and pass it to controller
+        res.locals.user = user
+
+    }
+
 
     next()
     } catch (error) {
