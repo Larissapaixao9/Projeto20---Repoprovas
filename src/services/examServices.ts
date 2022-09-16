@@ -22,3 +22,15 @@ export async function createExam(teacherDisciplineId:any, name:string, pdfUrl:st
     console.log(createExam)
     return createExam
 }
+
+export async function getAllExams(){
+    const exams = await examRepository.getAllExams();
+
+    const teachersDiscipline = await examRepository.getAllteachersDisciplines()
+
+    //console.log(teachersDiscipline.filter(item=>item.id)
+
+    console.log(exams)
+
+    return exams
+}

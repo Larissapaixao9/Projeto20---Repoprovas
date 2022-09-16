@@ -31,3 +31,15 @@ export async function createExam(teacherDisciplineId:any, name:string, pdfUrl:st
 
     return result
 }
+
+export async function getAllExams(){
+    const exams = await prisma.test.findMany();
+
+    return exams;
+}
+
+export async function getAllteachersDisciplines(){
+    const result = await prisma.teachersDiscipline.findMany();
+
+    return result;
+}
