@@ -15,8 +15,6 @@ examsRouter.post('/exam',validateSchema(examSchema),tokenValidatorMiddleware,Add
 
 examsRouter.get('/exam/:discipline',tokenValidatorMiddleware,getExamsByDiscipline)
 
-//examsRouter.get('/exam/:instructure',tokenValidatorMiddleware,getExamsByInstructor)
-
 
 
 

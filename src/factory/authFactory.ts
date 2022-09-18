@@ -71,6 +71,17 @@ export  async function examWrongInfo(){
     }
 }
 
+export  async function wrongProfessorAndDisciplineRelatioData(){
+    
+    return {
+        name: "Joaquim",
+        pdfUrl: "https://www.youtube.com/",
+        categoryId:1,
+        disciplineId: 100,
+        instructureId: 250
+    }
+}
+
 // {
 //     "name": "inhonho",
 //     "pdfUrl": "https://www.google.com/",

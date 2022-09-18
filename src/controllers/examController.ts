@@ -12,7 +12,6 @@ export async function AddNewExam(req:Request, res:Response) {
 
     const createExam = await examServices.createExam(teacherDisciplineId, name, pdfUrl, categoryId)
     
-
     return res.sendStatus(201)
 }
 
@@ -26,14 +25,3 @@ export async function getExamsByDiscipline(req:Request, res:Response) {
     return res.status(200).send(allExams)
 }
 
-
-// export async function getExamsByInstructor(req:Request, res:Response) {
-
-//     const paramsData = req.params.instructure;
-
-//     const allExams = await examServices.getExamsByInstructor(paramsData)
-
-//     console.log('chegou no fim do controller')
-
-//     return res.status(200).send(allExams)
-// }
