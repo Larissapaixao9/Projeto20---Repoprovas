@@ -48,3 +48,33 @@ export  async function emptyLogupInfo(){
         confirmPassword: ""
     }
 }
+
+export  async function examCorrectInfo(){
+    
+    return {
+        name: "matematicaa",
+        pdfUrl: "https://www.google.com/",
+        categoryId:1,
+        disciplineId: 1,
+        instructureId: 1
+    }
+}
+
+export  async function examWrongInfo(){
+    
+    return {
+        name: "",
+        pdfUrl: "",
+        categoryId:1,
+        disciplineId: 1,
+        instructureId: 1
+    }
+}
+
+// {
+//     "name": "inhonho",
+//     "pdfUrl": "https://www.google.com/",
+//     "categoryId": 2,
+//     "disciplineId": 6,
+//     "instructureId": 2
+//   }

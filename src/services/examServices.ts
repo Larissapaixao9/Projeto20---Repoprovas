@@ -21,38 +21,62 @@ export async function createExam(teacherDisciplineId:any, name:string, pdfUrl:st
     const creatingExam = await examRepository.createExam(teacherDisciplineId, name, pdfUrl, categoryId);
 
     console.log(createExam)
-    
+
     return createExam
 }
 
 export async function getAllExams(paramsData:string){
 
-    if(paramsData!='discipline'){
+    // if(paramsData!='instructure' && paramsData!='discipline'){
+    //     throw{
+    //         type:"not_found",
+    //         message:"erro no parametro do params"
+    //     }
+    // }
+
+    if(paramsData=='discipline'){
+        const teachersDiscipline = await examRepository.getAllExamsDisciplines()
+
+        console.log(teachersDiscipline)
+    
+        return teachersDiscipline
+    }
+
+    if(paramsData=='instructure'){
+        const exams = await examRepository.getExamsByInstructor();
+
+        console.log(exams)
+    
+        return exams
+    }
+
+    if(paramsData!='instructure' && paramsData!='discipline'){
         throw{
             type:"not_found",
             message:"erro no parametro do params"
         }
     }
 
-    const teachersDiscipline = await examRepository.getAllExamsDisciplines()
-
-    console.log(teachersDiscipline)
-
-    return teachersDiscipline
 }
 
-export async function getExamsByInstructor(paramsData:string){
+// export async function getExamsByInstructor(paramsData:string){
 
-    if(paramsData!='instructure'){
-        throw{
-            type:"not_found",
-            message:"erro no parametro do params"
-        }
-    }
+//     if(paramsData!='instructure' && paramsData!='discipline'){
+//         throw{
+//             type:"not_found",
+//             message:"erro no parametro do params"
+//         }
+//     }
 
-    const exams = await examRepository.getExamsByInstructor();
+//     if(paramsData=='instructure'){
+//         const exams = await examRepository.getExamsByInstructor();
 
-    console.log(exams)
+//         console.log(exams)
+    
+//         return exams
+//     }
+//     else{
+//         console.log('erro no getExamsByInstructor')
+//     }
 
-    return exams
-}
+// }

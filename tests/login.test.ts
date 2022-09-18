@@ -109,3 +109,289 @@ describe('Testa POST /signup ', () => {
       expect(status).toEqual(422)
     })
   })
+
+  beforeEach(async () => {
+    await prisma.$executeRaw`TRUNCATE TABLE tests`;
+  });
+  
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  describe('Testa POST /exam', ()=>{
+    it('Deve retornar 201 quando o exame foi criado com sucesso', async()=>{
+
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      const exam = await authFactories.examCorrectInfo();
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      //When using Supertest, the result comes as result.body
+
+      const token = loginData.body.token;
+      console.log(loginData)
+
+      //using set to send the Authorization Bearer Token correctly
+      const sendExam = await supertest(app).post('/exam').send(exam).set("Authorization", `Bearer ${token}`)
+
+      const status = sendExam.status
+
+      expect(status).toEqual(201)
+
+    })
+
+    it('Deve retornar 422 quando informações de criação do exame estiverem no formato errado', async()=>{
+
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      const exam = await authFactories.examWrongInfo();
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      //When using Supertest, the result comes as result.body
+
+      const token = loginData.body.token;
+
+      //using set to send the Authorization Bearer Token correctly
+      const sendExam = await supertest(app).post('/exam').send(exam).set("Authorization", `Bearer ${token}`)
+
+      const status = sendExam.status
+
+      expect(status).toEqual(422)
+
+    })
+
+    it('Deve retornar 401 quando token vier vazio', async()=>{
+
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      const exam = await authFactories.examCorrectInfo();
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      //When using Supertest, the result comes as result.body
+      const token = loginData.body.token;
+
+      //using set to send the Authorization Bearer Token correctly
+      const sendExam = await supertest(app).post('/exam').send(exam)
+
+      const status = sendExam.status
+
+      expect(status).toEqual(401)
+
+    })
+
+    it('Deve retornar 401 quando vier com Authorization errado', async()=>{
+
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      const exam = await authFactories.examCorrectInfo();
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      //When using Supertest, the result comes as result.body
+
+      const token = loginData.body.token;
+
+      //using set to send the Authorization Bearer Token correctly
+      const sendExam = await supertest(app).post('/exam').send(exam).set("A", `Bearer ${token}`)
+
+      const status = sendExam.status
+
+      expect(status).toEqual(401)
+
+    })
+
+    it('Deve retornar 500 para demais erros no Token', async()=>{
+
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      const exam = await authFactories.examCorrectInfo();
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      //When using Supertest, the result comes as result.body
+
+      const token = loginData.body.token;
+
+      //using set to send the Authorization Bearer Token correctly
+      const sendExam = await supertest(app).post('/exam').send(exam).set("Authorization", `Bearer ${''}`)
+
+      const status = sendExam.status
+
+      expect(status).toEqual(500)
+
+    })
+
+  })
+
+  describe('Testa GET /exam/:discipline ', () => {
+    it('Deve retornar 200, se digitado disciplines no params', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exam/discipline').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(200)
+    });
+
+    it('Deve retornar 404, se rota estiver com nome incorreto', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exames/discipline').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(404)
+    });
+
+    it('Deve retornar 404, se não houver parametro params', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exames').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(404)
+    });
+
+    it('Deve retornar 404, se parametro discipline do params estiver errado', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exames/pato').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(404)
+    });
+
+  });
+
+  describe('Testa GET /exam/:instructure ', () => {
+    it('Deve retornar 200, se digitado instructure no params', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+  
+      const result = await supertest(app).get('/exam/instructure').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(200)
+    });
+
+    it('Deve retornar 404, se rota estiver com nome incorreto', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exames/instructure').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(404)
+    });
+
+    it('Deve retornar 404, se não houver parametro params', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exames').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(404)
+    });
+
+    it('Deve retornar 404, se parametro discipline do params estiver errado', async()=>{
+      const userForLogup = await authFactories.fixeduser()
+
+      const user = await authFactories.userLogin()
+
+      await supertest(app).post('/signup').send(userForLogup)
+
+      const loginData = await supertest(app).post('/signin').send(user);
+
+      const token = loginData.body.token;
+
+      const result = await supertest(app).get('/exames/pato').set("Authorization", `Bearer ${token}`)
+  
+      const status = result.status
+
+      expect(status).toEqual(404)
+    });
+
+  });

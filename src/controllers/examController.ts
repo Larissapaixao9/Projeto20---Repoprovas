@@ -27,11 +27,13 @@ export async function getExamsByDiscipline(req:Request, res:Response) {
 }
 
 
-export async function getExamsByInstructor(req:Request, res:Response) {
+// export async function getExamsByInstructor(req:Request, res:Response) {
 
-    const paramsData = req.params.instructure;
+//     const paramsData = req.params.instructure;
 
-    const allExams = await examServices.getExamsByInstructor(paramsData)
+//     const allExams = await examServices.getExamsByInstructor(paramsData)
 
-    return res.status(200).send(allExams)
-}
+//     console.log('chegou no fim do controller')
+
+//     return res.status(200).send(allExams)
+// }
