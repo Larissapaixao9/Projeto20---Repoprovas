@@ -17,18 +17,40 @@ export async function findTeacherDisciplineId(disciplineId:number, instructureId
 }
 
 export async function createExam(teacherDisciplineId:any, name:string, pdfUrl:string, categoryId:number) {
+
     const creatingExam = await examRepository.createExam(teacherDisciplineId, name, pdfUrl, categoryId);
 
     console.log(createExam)
+    
     return createExam
 }
 
-export async function getAllExams(){
-    const exams = await examRepository.getAllExams();
+export async function getAllExams(paramsData:string){
 
-    const teachersDiscipline = await examRepository.getAllteachersDisciplines()
+    if(paramsData!='discipline'){
+        throw{
+            type:"not_found",
+            message:"erro no parametro do params"
+        }
+    }
 
-    //console.log(teachersDiscipline.filter(item=>item.id)
+    const teachersDiscipline = await examRepository.getAllExamsDisciplines()
+
+    console.log(teachersDiscipline)
+
+    return teachersDiscipline
+}
+
+export async function getExamsByInstructor(paramsData:string){
+
+    if(paramsData!='instructure'){
+        throw{
+            type:"not_found",
+            message:"erro no parametro do params"
+        }
+    }
+
+    const exams = await examRepository.getExamsByInstructor();
 
     console.log(exams)
 

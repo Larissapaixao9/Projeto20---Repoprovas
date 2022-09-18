@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { AddNewExam, getExamsByDiscipline } from '../controllers/examController'
+import { AddNewExam, getExamsByDiscipline, getExamsByInstructor } from '../controllers/examController'
 
 import { examSchema } from '../schemas/examSchema';
 
@@ -13,7 +13,10 @@ const examsRouter = Router();
 
 examsRouter.post('/exam',validateSchema(examSchema),tokenValidatorMiddleware,AddNewExam)
 
-examsRouter.get('/exam',tokenValidatorMiddleware,getExamsByDiscipline)
+examsRouter.get('/exam/:discipline',tokenValidatorMiddleware,getExamsByDiscipline)
+
+examsRouter.get('/exam/:instructure',tokenValidatorMiddleware,getExamsByInstructor)
+
 
 
 

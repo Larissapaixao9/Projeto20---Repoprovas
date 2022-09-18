@@ -18,12 +18,20 @@ export async function AddNewExam(req:Request, res:Response) {
 
 
 export async function getExamsByDiscipline(req:Request, res:Response) {
-    const allExams = await examServices.getAllExams()
 
-    return res.status(200).send({allExams})
+    const paramsData = req.params.discipline;
+
+    const allExams = await examServices.getAllExams(paramsData)
+
+    return res.status(200).send(allExams)
 }
 
 
 export async function getExamsByInstructor(req:Request, res:Response) {
-    
+
+    const paramsData = req.params.instructure;
+
+    const allExams = await examServices.getExamsByInstructor(paramsData)
+
+    return res.status(200).send(allExams)
 }

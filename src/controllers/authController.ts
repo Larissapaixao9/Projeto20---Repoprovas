@@ -10,17 +10,12 @@ export async function signup(req:Request, res:Response){
         password
     }
 
-try {
     const verifyEmailalreadyRegistered = await authServices.verifyEmailalreadyRegistered(email);
     
     const createUser = await authServices.createUser(userEmailandPassword)
 
     return res.sendStatus(201)
 
-} catch (error) {
-    console.log(error);
-    return res.sendStatus(500)
-}
 }
 
 

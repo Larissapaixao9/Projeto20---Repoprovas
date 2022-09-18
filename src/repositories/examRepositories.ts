@@ -38,8 +38,41 @@ export async function getAllExams(){
     return exams;
 }
 
-export async function getAllteachersDisciplines(){
-    const result = await prisma.teachersDiscipline.findMany();
+export async function getAllExamsDisciplines(){
+    const result = await prisma.term.findMany({
+        include:{
+            discipline:{
+                include:{
+                    teacherDiscipline:{
+                        include:{
+                            teacher:true,
+                            test:{
+                                include:{
+                                    test_Category_Relation:true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
 
     return result;
+}
+
+export async function getExamsByInstructor(){
+    const result = await prisma.teachersDiscipline.findMany({
+        include:{
+            teacher:true,
+            discipline:true,
+            test:{
+                include:{
+                    test_Category_Relation:true
+                }
+            }
+        }
+    })
+
+    return result
 }

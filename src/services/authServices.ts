@@ -36,6 +36,13 @@ export async function isUserValid(email:string, password:string) {
 
     let verifyPassword;
 
+    if(!user){
+        throw {
+            type: "not_found",
+            message: "email não encontrado"
+        }
+    }
+
     console.log(user)
     if(user){
          verifyPassword = bcrypt.compareSync(password,user.password);
