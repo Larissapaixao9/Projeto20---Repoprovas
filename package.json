@@ -7,7 +7,7 @@
     "postinstall": "tsc",
     "test": "jest --no-cache",
     "devStart": "nodemon -x ts-node src/server.ts",
-    "start":"ts-node dest/server.js"
+    "start":"node dest/src/server.js"
   },
   "keywords": [],
   "author": "",
